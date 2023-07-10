@@ -1,13 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.d660678b.css",
-    "main.js": "/static/js/main.e22e6d53.js",
+    "main.css": "/static/css/main.e4542568.css",
+    "main.js": "/static/js/main.761ddef0.js",
+    "static/media/NotoSansKR-Black.otf": "/static/media/NotoSansKR-Black.dba005b6b1bed712b472.otf",
+    "static/media/NotoSansKR-Bold.otf": "/static/media/NotoSansKR-Bold.c252383c4f70753be0e7.otf",
+    "static/media/NotoSansKR-Medium.otf": "/static/media/NotoSansKR-Medium.56207b5e52841342a21b.otf",
+    "static/media/NotoSansKR-Regular.otf": "/static/media/NotoSansKR-Regular.e1aa54c04a18648e6468.otf",
+    "static/media/NotoSansKR-Light.otf": "/static/media/NotoSansKR-Light.636ff9b51e826a733c3d.otf",
+    "static/media/Roboto-Regular.ttf": "/static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
+    "static/media/Roboto-Black.ttf": "/static/media/Roboto-Black.cf56c1b149d0a5e8d7c6.ttf",
+    "static/media/Roboto-Bold.ttf": "/static/media/Roboto-Bold.f80816a5455d171f948d.ttf",
+    "static/media/Roboto-Light.ttf": "/static/media/Roboto-Light.333da16a3f3cc391d087.ttf",
     "index.html": "/index.html",
-    "main.d660678b.css.map": "/static/css/main.d660678b.css.map",
-    "main.e22e6d53.js.map": "/static/js/main.e22e6d53.js.map"
+    "main.e4542568.css.map": "/static/css/main.e4542568.css.map",
+    "main.761ddef0.js.map": "/static/js/main.761ddef0.js.map"
   },
   "entrypoints": [
-    "static/css/main.d660678b.css",
-    "static/js/main.e22e6d53.js"
+    "static/css/main.e4542568.css",
+    "static/js/main.761ddef0.js"
   ]
 }
