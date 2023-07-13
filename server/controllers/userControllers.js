@@ -14,14 +14,14 @@ export const loginSuccess = async (req, res) => {
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
     const userData = await User.findOne({ _id: data.id });
     res.status(200).json({
-      ok: "true",
+      ok: true,
       username: userData.username,
       email: userData.email,
       name: userData.name,
       mobile: userData.mobile,
     });
   } catch (error) {
-    res.status(401).json({ ok: "false", message: "unAuthorized" });
+    res.status(401).json({ ok: false, message: "unAuthorized" });
   }
 };
 
