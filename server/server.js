@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import path from "path";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import userRouter from "./routers/userRouters.js";
 import "./db.js";
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(morgan("dev"));
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
