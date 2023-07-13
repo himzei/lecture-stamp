@@ -11,8 +11,8 @@ const app = express();
 const PORT = 8080;
 
 app.use(express.static("build"));
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/build/index.html");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/build/index.html"));
 });
 
 app.use(morgan("dev"));

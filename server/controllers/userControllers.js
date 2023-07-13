@@ -13,6 +13,8 @@ export const loginSuccess = async (req, res) => {
     const token = req.cookies?.accessToken;
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
     const userData = await User.findOne({ _id: data.id });
+    console.log(userData);
+
     res.status(200).json({
       ok: true,
       username: userData.username,
