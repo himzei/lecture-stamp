@@ -117,3 +117,10 @@ export const postLogin = async (req, res) => {
     res.status(500).json({ ok: "false", error: "에러가 발생하였습니다." });
   }
 };
+
+// 카카오 싱크 간편가입
+export const kakaoAsyncRegister = async (req, res) => {
+  const data = req.query;
+  console.log(req.params);
+  res.json({ data });
+};
