@@ -2,7 +2,6 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-// test
 export const getUsersAll = async (req, res) => {
   const users = await User.find({});
   res.status(200).json({ users });
@@ -13,7 +12,6 @@ export const loginSuccess = async (req, res) => {
     const token = req.cookies?.accessToken;
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
     const userData = await User.findOne({ _id: data.id });
-    console.log(userData);
 
     res.status(200).json({
       ok: true,
@@ -21,6 +19,8 @@ export const loginSuccess = async (req, res) => {
       email: userData.email,
       name: userData.name,
       mobile: userData.mobile,
+      missions: userData.missionCompleted,
+      id: userData._id,
     });
   } catch (error) {
     res.status(401).json({ ok: false, message: "unAuthorized" });
@@ -121,6 +121,61 @@ export const postLogin = async (req, res) => {
 // 카카오 싱크 간편가입
 export const kakaoAsyncRegister = async (req, res) => {
   const data = req.query;
-  console.log(req.params);
   res.json({ data });
+};
+
+export const postEditMissions = async (req, res) => {
+  try {
+    const {
+      body: { missionId, userId },
+    } = req;
+    const mission = missionId.trim();
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      missionCompleted: mission,
+    });
+    res.status(200).json({ ok: "true", updatedUser });
+  } catch (error) {
+    res.status(500).json({ ok: "false", error });
+  }
+};
+
+export const kakaoLogin = async (req, res) => {
+  try {
+    const KAKAO_BASE_PATH = "https://kauth.kakao.com/oauth/token";
+    const config = {
+      grant_type: "authorization_code",
+      client_id: process.env.KAKAO_CLIENT,
+      code: req.body.code,
+      redirect_uri: process.env.REDIRECT_URI,
+    };
+
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${KAKAO_BASE_PATH}?${params}`;
+    console.log(finalUrl);
+
+    const data = await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+    const tokenRequest = await data.json();
+
+    console.log(tokenRequest);
+
+    // if ("access_token" in tokenRequest) {
+    //   const { access_token } = tokenRequest;
+    //   const userRequest = await fetch("https://kapi.kakao.com/v2/user/me", {
+    //     headers: {
+    //       "Content-Type": "application/x-www-form-urlencoded",
+    //       Authorization: `Bearer ${access_token}`,
+    //     },
+    //   });
+    //   const userData = await userRequest.json();
+
+    //   console.log(userData);
+    // }
+  } catch (error) {
+    console.log(error);
+  }
 };

@@ -1,26 +1,30 @@
 {
   "files": {
-    "main.css": "/static/css/main.4b493e96.css",
-    "main.js": "/static/js/main.a19e5c47.js",
+    "main.css": "/static/css/main.1fce3cee.css",
+    "main.js": "/static/js/main.70326b52.js",
     "static/media/NotoSansKR-Black.otf": "/static/media/NotoSansKR-Black.dba005b6b1bed712b472.otf",
     "static/media/NotoSansKR-Bold.otf": "/static/media/NotoSansKR-Bold.c252383c4f70753be0e7.otf",
     "static/media/NotoSansKR-Medium.otf": "/static/media/NotoSansKR-Medium.56207b5e52841342a21b.otf",
     "static/media/NotoSansKR-Regular.otf": "/static/media/NotoSansKR-Regular.e1aa54c04a18648e6468.otf",
+    "static/media/method1.png": "/static/media/method1.6fffd971f169ba6ae9c8.png",
     "static/media/Roboto-Regular.ttf": "/static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
     "static/media/Roboto-Black.ttf": "/static/media/Roboto-Black.cf56c1b149d0a5e8d7c6.ttf",
     "static/media/Roboto-Bold.ttf": "/static/media/Roboto-Bold.f80816a5455d171f948d.ttf",
     "static/media/Roboto-Light.ttf": "/static/media/Roboto-Light.333da16a3f3cc391d087.ttf",
+    "static/media/method2.png": "/static/media/method2.527046cf124198b8f3d0.png",
     "static/media/complete.png": "/static/media/complete.a767fc33243f04e1a3fb.png",
     "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/arrow.png": "/static/media/arrow.03cb60c084362e759169.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
+    "static/media/copy.svg": "/static/media/copy.dff5d99e9e5e04104bff2e18b317bc23.svg",
     "index.html": "/index.html",
     "static/media/qrscan.svg": "/static/media/qrscan.2c8789836c4c9fea951998a53e573c69.svg",
-    "main.4b493e96.css.map": "/static/css/main.4b493e96.css.map",
-    "main.a19e5c47.js.map": "/static/js/main.a19e5c47.js.map"
+    "main.1fce3cee.css.map": "/static/css/main.1fce3cee.css.map",
+    "main.70326b52.js.map": "/static/js/main.70326b52.js.map"
   },
   "entrypoints": [
-    "static/css/main.4b493e96.css",
-    "static/js/main.a19e5c47.js"
+    "static/css/main.1fce3cee.css",
+    "static/js/main.70326b52.js"
   ]
 }

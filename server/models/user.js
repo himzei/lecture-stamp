@@ -9,7 +9,9 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   avatarUrl: String,
   socialOnly: { type: Boolean, default: false },
+  missionCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: "Missions" }],
   createdAt: Date,
+  updatedAt: Date,
 });
 
 userSchema.pre("save", async function () {
