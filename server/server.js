@@ -11,16 +11,17 @@ import "./db.js";
 import MongoStore from "connect-mongo";
 import performanceRouter from "./routers/performanceRouters.js";
 
-// const __dirname = path.resolve();
+const __dirname = path.resolve();
 const app = express();
 const PORT = 8080;
+const router = express.Router();
 
 app.use(express.static("build"));
 
 // 새로고침
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "/build/index.html"));
-// });
+router.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/build/index.html"));
+});
 
 app.use(morgan("dev"));
 app.use(cookieParser());
