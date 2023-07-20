@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   mobile: { type: String },
   email: { type: String, unique: true },
   name: { type: String, required: true },
+  birthyear: Number,
+  gender: String,
   avatarUrl: String,
   socialOnly: { type: Boolean, default: false },
   missionCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: "Missions" }],

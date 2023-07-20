@@ -9,18 +9,20 @@ export const getUsersAll = async (req, res) => {
 
 export const loginSuccess = async (req, res) => {
   try {
-    const token = req.cookies?.accessToken;
-    const data = jwt.verify(token, process.env.ACCESS_SECRET);
-    const userData = await User.findOne({ _id: data.id });
+    const userData = req.session.user;
+    const id = userData?._id;
+    const loggedInUser = await User.findById(id);
+    const { username, email, mobile, name, _id, missionCompleted } =
+      loggedInUser;
 
     res.status(200).json({
       ok: true,
-      username: userData.username,
-      email: userData.email,
-      name: userData.name,
-      mobile: userData.mobile,
-      missions: userData.missionCompleted,
-      id: userData._id,
+      username,
+      email,
+      name,
+      mobile,
+      missions: missionCompleted,
+      id: _id,
     });
   } catch (error) {
     res.status(401).json({ ok: false, message: "unAuthorized" });
@@ -131,8 +133,9 @@ export const postEditMissions = async (req, res) => {
     } = req;
     const mission = missionId.trim();
     const updatedUser = await User.findByIdAndUpdate(userId, {
-      missionCompleted: mission,
+      $push: { missionCompleted: mission },
     });
+    console.log(updatedUser);
     res.status(200).json({ ok: "true", updatedUser });
   } catch (error) {
     res.status(500).json({ ok: "false", error });
@@ -151,31 +154,60 @@ export const kakaoLogin = async (req, res) => {
 
     const params = new URLSearchParams(config).toString();
     const finalUrl = `${KAKAO_BASE_PATH}?${params}`;
-    console.log(finalUrl);
+    // console.log(finalUrl);
 
     const data = await fetch(finalUrl, {
-      method: "POST",
+      method: "GET",
       headers: {
         Accept: "application/json",
       },
     });
     const tokenRequest = await data.json();
 
-    console.log(tokenRequest);
+    if ("access_token" in tokenRequest) {
+      const { access_token } = tokenRequest;
+      const userRequest = await fetch("https://kapi.kakao.com/v2/user/me", {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      const userData = await userRequest.json();
 
-    // if ("access_token" in tokenRequest) {
-    //   const { access_token } = tokenRequest;
-    //   const userRequest = await fetch("https://kapi.kakao.com/v2/user/me", {
-    //     headers: {
-    //       "Content-Type": "application/x-www-form-urlencoded",
-    //       Authorization: `Bearer ${access_token}`,
-    //     },
-    //   });
-    //   const userData = await userRequest.json();
+      const {
+        kakao_account: {
+          profile: { thumbnail_image_url },
+          name,
+          email,
+          phone_number,
+          birthyear,
+          gender,
+        },
+      } = userData;
+      const phone = phone_number.replace(/[^\d]/g, "");
+      const modifiedNumber = "0" + phone.toString().substring(2);
+      const existingUser = await User.findOne({ email });
 
-    //   console.log(userData);
-    // }
+      if (existingUser) {
+        req.session.user = existingUser;
+        return res.status(200).json({ ok: "true" });
+      } else {
+        const user = await User.create({
+          name,
+          username: email.split("@")[0],
+          email,
+          mobile: modifiedNumber,
+          gender,
+          birthyear,
+          avatarUrl: thumbnail_image_url,
+          missionCompleted: req.session.missionKakaoId,
+        });
+        req.session.user = user;
+        return res.status(200).json({ ok: "true", user });
+      }
+    }
   } catch (error) {
     console.log(error);
+    return res.status(401).json({ ok: "false" });
   }
 };

@@ -6,6 +6,8 @@ const missionSchema = new mongoose.Schema({
   imgSrc: { type: String },
   href: String,
   company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
+  order: { type: Number, required: true },
+  reference: { type: String },
   createdAt: Date,
   updatedAt: Date,
 });

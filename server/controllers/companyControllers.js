@@ -21,7 +21,24 @@ export const postRegister = async (req, res) => {
 export const getCompany = async (req, res) => {
   const Uid = req.query.Uid;
   try {
-    const company = await Company.findOne({ _id: Uid }).populate("missions");
+    const company = await Company.findOne({ _id: Uid }).populate({
+      path: "missions",
+      options: {
+        sort: { order: 1 },
+      },
+    });
+    // .aggregate([{ $sort: { order: 1 } }]);
+    const { missions } = company;
+    const missionKakao = missions.find(
+      (mission) => mission.reference === "kakaoTalkSync"
+    );
+    const missionInstagram = missions.find(
+      (mission) => mission.reference === "missionInstagram"
+    );
+    req.session.missionKakaoId = missionKakao._id;
+    req.session.missionInstagram = missionInstagram._id;
+    req.session.companyId = Uid;
+
     res.status(200).json({ ok: "true", company });
   } catch (error) {
     res.status(500).json({ ok: "false", message: "에러가 발생", error });
