@@ -14,14 +14,11 @@ import performanceRouter from "./routers/performanceRouters.js";
 const __dirname = path.resolve();
 const app = express();
 const PORT = 8080;
-const router = express.Router();
+// const router = express.Router();
 
 app.use(express.static("build"));
 
 // 새로고침
-router.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/build/index.html"));
-});
 
 app.use(morgan("dev"));
 app.use(cookieParser());
@@ -46,3 +43,7 @@ app.use("/api/company", companyRouter);
 app.use("/api/performance", performanceRouter);
 
 app.listen(PORT, () => console.log(`📀http://localhost:${PORT}`));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/build/index.html"));
+});
