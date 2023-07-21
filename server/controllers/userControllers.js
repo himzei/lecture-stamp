@@ -132,10 +132,11 @@ export const postEditMissions = async (req, res) => {
       body: { missionId, userId },
     } = req;
     const mission = missionId.trim();
+
     const updatedUser = await User.findByIdAndUpdate(userId, {
       $push: { missionCompleted: mission },
     });
-    console.log(updatedUser);
+
     res.status(200).json({ ok: "true", updatedUser });
   } catch (error) {
     res.status(500).json({ ok: "false", error });
