@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "nodemon --exec babel-node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,7 +21,8 @@
     "mongoose": "^7.3.4",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "solapi": "^5.2.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.6",

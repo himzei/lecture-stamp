@@ -1,6 +1,33 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { SolapiMessageService } from "solapi";
+
+const messageService = new SolapiMessageService(
+  process.env.SOLAPI_API_KEY,
+  process.env.SOLAPI_SECRET_KEY
+);
+
+const msssageSend = (tel, name) => {
+  messageService.send({
+    to: tel,
+    from: "01071860119",
+    kakaoOptions: {
+      pfId: "KA01PF230329052246587htCxbWQq2P1",
+      templateId: "KA01TP230329070149638ka9toTFP1Hn",
+      // 치환문구가 없을 때의 기본 형태
+      variables: {
+        "#{name}": name,
+        "#{type}": "스탬프투어",
+        "#{urlManila}": "iwon-philippines.netlify.app",
+        "#{urlCebu}": "iwon-cebu.netlify.app",
+        "#{urlCebuMonth}": "iwon-cebu-month.netlify.app",
+        "#{urlDal}": "iwon-tarlac.netlify.app",
+        "#{urlBagio}": "iwon-baguio.netlify.app/",
+      },
+      disableSms: true,
+    },
+  });
+};
 
 export const getUsersAll = async (req, res) => {
   const users = await User.find({});
@@ -75,46 +102,18 @@ export const postLogin = async (req, res) => {
       .status(401)
       .json({ ok: "false", message: "해당하는 유저가 없습니다." });
   }
-
   const ok = await bcrypt.compare(password, user.password);
+
   if (!ok) {
     return res
       .status(401)
       .json({ ok: "false", message: "아이디/패스워드가 다릅니다." });
   }
+
   try {
-    const accessToken = jwt.sign(
-      {
-        id: user._id,
-      },
-      process.env.ACCESS_SECRET,
-      {
-        expiresIn: "24h",
-      }
-    );
-    const refreshToken = jwt.sign(
-      {
-        id: user._id,
-      },
-      process.env.REFRESH_SECRET,
-      {
-        expiresIn: "30d",
-      }
-    );
+    req.session.user = user;
 
-    res.cookie("accessToken", accessToken, {
-      secure: true,
-      httpOnly: false,
-      sameSite: "None",
-    });
-
-    res.cookie("refreshToken", refreshToken, {
-      secure: true,
-      httpOnly: false,
-      sameSite: "None",
-    });
-
-    res.status(200).json({ ok: "true" });
+    res.status(200).json({ ok: "true", user });
   } catch (error) {
     res.status(500).json({ ok: "false", error: "에러가 발생하였습니다." });
   }
@@ -132,10 +131,27 @@ export const postEditMissions = async (req, res) => {
       body: { missionId, userId },
     } = req;
     const mission = missionId.trim();
+    const existing = await User.findOne({
+      _id: userId,
+      missionCompleted: { $in: [mission] },
+    });
 
+    if (existing) {
+      return json({
+        ok: "toast",
+        message: "이미 미션 완료한 QR크드입니다.",
+      });
+    }
     const updatedUser = await User.findByIdAndUpdate(userId, {
       $push: { missionCompleted: mission },
     });
+    const name = updatedUser.name;
+    const tel = updatedUser.mobile;
+    const completed = updatedUser.missionCompleted.filter((mission) => mission);
+    console.log(tel, name);
+    if (completed.length >= 3) {
+      msssageSend(tel, name);
+    }
 
     res.status(200).json({ ok: "true", updatedUser });
   } catch (error) {
